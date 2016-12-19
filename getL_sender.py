@@ -6,7 +6,7 @@ import random
 import time
 import platform
 import urllib2
-
+import os
 #===============Utils======================================#	
 rol = lambda val, r_bits, max_bits: \
     (val << r_bits%max_bits) & (2**max_bits-1) | \
@@ -118,7 +118,14 @@ def m():
 	key = 'ftp2'
 	getL_packet = (build_getL_packet(key, flag))
 	print "getL packet: "+ (getL_packet.encode('hex'))
-	peer_list =  load_bootstrap_peers(peer_file)
+	if os.path.isfile(new_peers):
+		peer_list = load_new_peers(new_peers)
+		print >> sys.stderr, 'peers.p exists, loading peers.p instead of %s...' %peer_file
+		time.sleep(1)
+	else:
+		print >> sys.stderr, 'Loading peer list: %s...' %peer_file
+		peer_list =  load_bootstrap_peers(peer_file)
+		time.sleep(1)
 	server_address = ('localhost', 10000)
     # Send data
 	data=''
