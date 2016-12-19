@@ -3,6 +3,7 @@ import sys
 import random
 import struct
 import urllib2
+import os
 
 def internet_on():
     try:
@@ -79,7 +80,6 @@ def udp_listen(cok, server_address, port):
 	print >>sys.stderr, '[+] Starting up on %s port %s' % server_address
 	sock.bind(server_address)
 	filename = 'peers_stored/peers.p'
-	checker = 0
 	count = 0
 	peer_list = []
 	while True:
@@ -119,7 +119,7 @@ def udp_listen(cok, server_address, port):
 					for i in peer_list:
 						peers1.append(str(i[0]))
 					peers1 = list(set(peers1))
-					if checker == 0:
+					if not(os.path.isfile(filename)):
 						f = open(filename,'w')
 						for ip in peers1:
 							print >> f, ip
